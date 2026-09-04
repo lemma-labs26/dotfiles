@@ -1,0 +1,85 @@
+# ==============================================================================
+#  ALACRITTY - CYBERPUNK 2077 // NEON HUD EDITION 
+# ==============================================================================
+
+[terminal.shell]
+program = "pwsh.exe"
+
+# --- 1. Ventana sólida y espacio amplio (sin distracciones del fondo) ---
+[window]
+opacity = 1.0
+decorations = "Full"
+
+[window.padding]
+x = 22
+y = 18
+
+# --- 2. Tipografía nítida ---
+[font]
+size = 13.0
+
+[font.normal]
+family = "JetBrainsMono NF"
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMono NF"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono NF"
+style = "Italic"
+
+# --- 3. Cursor Láser Neón ---
+[cursor]
+style = { shape = "Beam", blinking = "On" }
+
+# --- 4. Paleta Cyberpunk / Synthwave Outrun ---
+[colors.primary]
+background = "#0d0b18"      # Abismo noche cyberpunk (violeta muy oscuro)
+foreground = "#f8f9fc"      # Blanco puro reflectante
+dim_foreground = "#7b7596"
+bright_foreground = "#ffffff"
+
+[colors.cursor]
+text = "#0d0b18"
+cursor = "#00f0ff"          # Láser cian eléctrico
+
+[colors.vi_mode_cursor]
+text = "#0d0b18"
+cursor = "#ff007f"          # Láser fucsia neón
+
+[colors.search.matches]
+foreground = "#0d0b18"
+background = "#ffe600"
+
+[colors.search.focused_match]
+foreground = "#0d0b18"
+background = "#ff007f"
+
+[colors.selection]
+text = "#ffffff"
+background = "#3c1b63"      # Selección morada profunda
+
+# Neones estándar
+[colors.normal]
+black = "#1b1734"
+red = "#ff2a6d"             # Hot Neon Pink
+green = "#05d9e8"           # Cyber Cyan
+yellow = "#ffb800"          # Solar Yellow
+blue = "#7928ca"            # Electric Violet
+magenta = "#f72585"         # Acid Magenta
+cyan = "#00f0ff"            # Glow Cyan
+white = "#e2e8f0"
+
+# Neones brillantes / Hi-Voltage
+[colors.bright]
+black = "#2e2754"
+red = "#ff5376"             # Radium Red
+green = "#39ff14"           # Toxic Lime Green
+yellow = "#ffe600"          # Laser Yellow
+blue = "#9d4edd"            # Ultra Violet
+magenta = "#ff007f"         # Shocking Pink
+cyan = "#67e8f9"            # Hyper Cyan
+white = "#ffffff"
+
