@@ -75,7 +75,9 @@ Once WinGet is available, open a PowerShell window and run:
 
 ```powershell
 winget install --accept-source-agreements --accept-package-agreements -e `
-  --id Microsoft.PowerShell `
+  --id Microsoft.PowerShell
+```
+Put winget install --accept-source-agreements --accept-package-agreements -e with each of the following id's: 
   --id Microsoft.WindowsTerminal `
   --id Alacritty.Alacritty `
   --id DEVCOM.JetBrainsMonoNerdFont `
@@ -89,7 +91,7 @@ winget install --accept-source-agreements --accept-package-agreements -e `
   --id PascalBrachet.Texmaker `
   --id Git.Git `
   --id GitHub.cli
-```
+If needed add --Force and/or upgrade.
 
 *(Alternative with Chocolatey if you prefer Choco:)*
 ```powershell
