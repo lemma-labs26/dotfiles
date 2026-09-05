@@ -78,18 +78,18 @@ winget install --accept-source-agreements --accept-package-agreements -e `
   --id Microsoft.PowerShell
 ```
 Put winget install --accept-source-agreements --accept-package-agreements -e with each of the following id's: 
-- --id Microsoft.WindowsTerminal `
-- --id Alacritty.Alacritty `
-- --id DEVCOM.JetBrainsMonoNerdFont `
-- --id Starship.Starship `
-- --id ajeetdsouza.zoxide `
-- --id sharkdp.fd `
-- --id sharkdp.bat `
-- --id eza-community.eza `
-- --id BurntSushi.ripgrep.MSVC `
-- --id Rizonesoft.Notepad3 `
-- --id PascalBrachet.Texmaker `
-- --id Git.Git `
+- --id Microsoft.WindowsTerminal 
+- --id Alacritty.Alacritty 
+- --id DEVCOM.JetBrainsMonoNerdFont 
+- --id Starship.Starship 
+- --id ajeetdsouza.zoxide 
+- --id sharkdp.fd 
+- --id sharkdp.bat 
+- --id eza-community.eza 
+- --id BurntSushi.ripgrep.MSVC 
+- --id Rizonesoft.Notepad3 
+- --id PascalBrachet.Texmaker 
+- --id Git.Git 
 - --id GitHub.cli
 If needed add --Force and/or upgrade.
 
