@@ -10,7 +10,7 @@
 2. Comprehensive Software Catalog (What each tool does & why we use it)
 3. One-Liner Mass Installation Commands
 4. Installing PowerShell Modules
-5. Dotfiles & Configuration Placement (The 4 essential config files)
+5. Dotfiles & Configuration Placement (The 5 essential configs)
 6. Cheat Sheet of Daily Shortcuts
 
 ---
@@ -66,12 +66,16 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 | **Alacritty** | `Alacritty.Alacritty` | **Ultralight GPU terminal (OpenGL).** Zero latency, minimal memory usage, standalone single-window speed demon customized with our Cyberpunk 2077 neon theme. |
 | **JetBrainsMono Nerd Font** | `DEVCOM.JetBrainsMonoNerdFont` | **Extended developer font.** Patched with thousands of icons (Git branch, OS logos, language logos, arrows, folders) essential for Starship and Terminal-Icons. |
 | **Starship** | `Starship.Starship` | **Intelligent cross-shell prompt.** Displays your Git branch, staged status (`+`, `!`), Python/Node/Rust versions, execution time, and path capsules. |
+| **GlazeWM** | `glzr-io.glazewm` | **Tiling Window Manager for Windows.** Automatic window splitting, dynamic workspaces (1-9), app auto-routing (Terminal -> 2, Files -> 5, Chrome -> 1), and multi-profile manager. |
+| **Zebar** | `glzr-io.zebar` | **Customizable status bar for Windows.** Lightweight desktop bar displaying workspace states, clock, hardware stats, and GlazeWM integration. |
 
 ---
 
 ## 3. ONE-LINER MASS INSTALLATION
 
 Once WinGet is available, open a PowerShell window and run:
+
+**PowerShell**
 
 ```powershell
 winget install --accept-source-agreements --accept-package-agreements -e `
@@ -91,11 +95,14 @@ Put winget install --accept-source-agreements --accept-package-agreements -e wit
 - --id PascalBrachet.Texmaker 
 - --id Git.Git 
 - --id GitHub.cli
+- --id glzr-io.glazewm
+- --id glzr-io.zebar
+
 If needed add --Force and/or upgrade.
 
 *(Alternative with Chocolatey if you prefer Choco:)*
 ```powershell
-choco install -y powershell-core microsoft-windows-terminal alacritty nerd-fonts-jetbrainsmono starship zoxide fd ripgrep bat eza notepad3 texmaker git gh
+choco install -y powershell-core microsoft-windows-terminal alacritty nerd-fonts-jetbrainsmono starship zoxide fd ripgrep bat eza notepad3 texmaker git gh glazewm
 ```
 
 ---
@@ -115,11 +122,11 @@ Install-Module -Name PSReadLine, Terminal-Icons -Scope CurrentUser -Force
 
 ## 5. DOTFILES & CONFIGURATION PLACEMENT
 
-Save these 4 files and copy them to their respective locations on the new computer:
+Save these 5 configurations and copy them to their respective locations on the new computer:
 
 ### 1. PowerShell Profile
 * **Target path:** `C:\Users\<username>\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`
-* **Contains:** PSReadLine setup, Catppuccin prompt colors, custom aliases (`e`, `tx`, `texmaker`, `reload`).
+* **Contains:** PSReadLine setup, Catppuccin prompt colors, custom aliases (`e`, `tx`, `texmaker`, `reload`), and `glaze-profile` integration.
 
 ### 2. Starship Configuration
 * **Target path:** `C:\Users\<username>\.config\starship.toml`
@@ -133,12 +140,43 @@ Save these 4 files and copy them to their respective locations on the new comput
 * **Target path:** `C:\Users\<username>\AppData\Roaming\alacritty\alacritty.toml`
 * **Contains:** Cyberpunk 2077 Night City theme, electric cyan beam cursor, padding, and default launch command set to `pwsh.exe`.
 
+### 5. GlazeWM & Zebar Configuration (Tiling Window Manager + Profiles)
+* **Target path:** `C:\Users\<username>\.glzr\`
+* **Quick Deploy Command (from dotfiles root):**
+```powershell
+Copy-Item -Path .\glzr\* -Destination "$HOME\.glzr" -Recurse -Force
+```
+* **Contains:**
+  * Active configuration (`config.yaml`) with anti-loss safety mode (`hide_method: 'hide'` + `show_all_in_taskbar: true`), auto-floating system dialogs (`#32770`), and 1-9 workspaces:
+    * `1:Web` (Chrome auto-route)
+    * `2:Terminal` (WindowsTerminal auto-route with focus)
+    * `3:Code` (VS Code dedicated)
+    * `4:Docs` (Documentation / notes)
+    * `5:Files` (File Explorer auto-route with focus)
+    * `6:Media` (YouTube / Spotify / comms)
+    * `7-9:Work 1-3` (Sandbox workspaces for AI tools, Antigravity, ChatGPT, Cursor, notebooks)
+  * Multi-profile system (`profiles/`): `experimental.yaml` (custom active safe setup), `backup.yaml` (classic stable), `factory.yaml` (official default).
+  * Profile switcher and emergency rescue script (`glaze-profile.ps1`).
+  * Zebar status bar preset configuration (`zebar/settings.json`).
+
 ---
 
 ## 6. CHEAT SHEET OF DAILY SHORTCUTS
 
 | Command / Key | What it does |
 | :--- | :--- |
+| **`glaze-profile <perfil>`** | Switch GlazeWM config on the fly (`factory`, `backup`, `experimental`, `status`). |
+| **`glaze-profile rescue`** | Emergency rescue: restores and un-hides any minimized/lost Chrome, Code, and Terminal windows. |
+| **<kbd>AltGr</kbd> + <kbd>Enter</kbd>** | Launch Windows Terminal and immediately travel with focus to Workspace 2 (`Terminal`). |
+| **<kbd>AltGr</kbd> + <kbd>C</kbd>** | Launch VS Code in current workspace with immediate focus. |
+| **<kbd>AltGr</kbd> + <kbd>Shift</kbd> + <kbd>1..9</kbd>** | Move active window to workspace 1..9 AND travel with focus together. |
+| **<kbd>AltGr</kbd> + <kbd>1..9</kbd>** | Jump to workspace 1..9 (`Web`, `Terminal`, `Code`, `Docs`, `Files`, `Media`, `Work 1-3`). |
+| **<kbd>AltGr</kbd> + <kbd>H/J/K/L</kbd>** | Shift focus between tiled windows (or arrow keys). |
+| **<kbd>AltGr</kbd> + <kbd>Shift</kbd> + <kbd>H/J/K/L</kbd>** | Move focused window position within current tiled layout. |
+| **<kbd>AltGr</kbd> + <kbd>R</kbd>** | Enter interactive resize mode (use HJKL/arrows to resize, Enter/Esc to exit). |
+| **<kbd>AltGr</kbd> + <kbd>Shift</kbd> + <kbd>Space</kbd>** | Toggle floating mode for focused window (centered). |
+| **<kbd>AltGr</kbd> + <kbd>F</kbd>** | Toggle fullscreen mode. |
+| **<kbd>AltGr</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>** | Hot-reload GlazeWM configuration without restarting. |
 | **`e`** | Clean, icon-rich directory list with LaTeX icon support (via `eza`). |
 | **`fd <query>`** | Search files and folders at light speed. |
 | **`fd -e tex`** | Find all LaTeX files in the project. |

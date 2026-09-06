@@ -64,3 +64,8 @@ function global:e {
 function global:texmaker { & "C:\Program Files (x86)\Texmaker\texmaker.exe" @args }
 function global:tx { & "C:\Program Files (x86)\Texmaker\texmaker.exe" @args }
 function global:hist { & "C:\Users\moral\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt" @args }
+
+# --- 6. Gestor de Perfiles de GlazeWM ---
+function global:glaze-profile {
+    & "$HOME\.glzr\glazewm\profiles\glaze-profile.ps1" @args
+}

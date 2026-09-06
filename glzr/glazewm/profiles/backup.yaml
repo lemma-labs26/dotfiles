@@ -1,0 +1,297 @@
+general:
+  # Commands to run when the WM has started. This is useful for running a
+  # script or launching another application.
+  # Example: The below command launches Zebar.
+  startup_commands: ['shell-exec zebar']
+
+  # Commands to run just before the WM is shutdown.
+  # Example: The below command kills Zebar.
+  shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
+
+  # Commands to run after the WM config is reloaded.
+  config_reload_commands: []
+
+  # Whether to automatically focus windows underneath the cursor.
+  focus_follows_cursor: false
+
+  # Whether to switch back and forth between the previously focused
+  # workspace when focusing the current workspace.
+  toggle_workspace_on_refocus: false
+
+  cursor_jump:
+    # Whether to automatically move the cursor on the specified trigger.
+    enabled: true
+
+    # Trigger for cursor jump:
+    # - 'monitor_focus': Jump when focus changes between monitors.
+    # - 'window_focus': Jump when focus changes between windows.
+    trigger: 'monitor_focus'
+
+  # How windows should be hidden when switching workspaces.
+  # - 'cloak': Recommended. Hides windows with no animation.
+  # - 'hide': Legacy method (v3.5 and earlier) that has a brief animation,
+  # but has stability issues with some apps.
+  hide_method: 'cloak'
+
+  # Affects which windows get shown in the native Windows taskbar. Has no
+  # effect if `hide_method: 'hide'`.
+  # - 'true': Show all windows (regardless of workspace).
+  # - 'false': Only show windows from the currently shown workspaces.
+  show_all_in_taskbar: false
+
+gaps:
+  # Whether to scale the gaps with the DPI of the monitor.
+  scale_with_dpi: true
+
+  # Gap between adjacent windows.
+  inner_gap: '20px'
+
+  # Gap between windows and the screen edge.
+  outer_gap:
+    top: '60px'
+    right: '20px'
+    bottom: '20px'
+    left: '20px'
+
+window_effects:
+  # Visual effects to apply to the focused window.
+  focused_window:
+    # Highlight the window with a colored border.
+    # ** Exclusive to Windows 11 due to API limitations.
+    border:
+      enabled: true
+      color: '#8dbcff'
+
+    # Remove the title bar from the window's frame. Note that this can
+    # cause rendering issues for some applications.
+    hide_title_bar:
+      enabled: false
+
+    # Change the corner style of the window's frame.
+    # ** Exclusive to Windows 11 due to API limitations.
+    corner_style:
+      enabled: false
+      # Allowed values: 'square', 'rounded', 'small_rounded'.
+      style: 'square'
+
+    # Change the transparency of the window.
+    transparency:
+      enabled: false
+      # Can be something like '95%' or '0.95' for slightly transparent windows.
+      # '0' or '0%' is fully transparent (and, by consequence, unfocusable).
+      opacity: '95%'
+
+  # Visual effects to apply to non-focused windows.
+  other_windows:
+    border:
+      enabled: true
+      color: '#a1a1a1'
+    hide_title_bar:
+      enabled: false
+    corner_style:
+      enabled: false
+      style: 'square'
+    transparency:
+      enabled: false
+      opacity: '0%'
+
+window_behavior:
+  # New windows are created in this state whenever possible.
+  # Allowed values: 'tiling', 'floating'.
+  initial_state: 'tiling'
+
+  # Sets the default options for when a new window is created. This also
+  # changes the defaults for when the state change commands, like
+  # `set-floating`, are used without any flags.
+  state_defaults:
+    floating:
+      # Whether to center floating windows by default.
+      centered: true
+
+      # Whether to show floating windows as always on top.
+      shown_on_top: false
+
+    fullscreen:
+      # Maximize the window if possible. If the window doesn't have a
+      # maximize button, then it'll be fullscreen'ed normally instead.
+      maximized: false
+
+      # Whether to show fullscreen windows as always on top.
+      shown_on_top: false
+
+workspaces:
+  - name: '1'
+    display_name: 'chrome1'
+  - name: '2'
+    display_name: 'chrome2'
+  - name: '3'
+  - name: '4'
+  - name: '5'
+    display_name: 'wsl_vscode'
+  - name: '6'
+    display_name: 'Folders'
+  - name: '7'
+    display_name: 'codex1'
+  - name: '8'
+    display_name: 'codex2'
+  - name: '9'
+    display_name: 'codex3'
+
+window_rules:
+  - commands: ['ignore']
+    match:
+      # Ignores any Zebar windows.
+      - window_process: { equals: 'zebar' }
+
+      # Ignores picture-in-picture windows for browsers.
+      - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
+        window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
+
+      # Ignore rules for various 3rd-party apps.
+      - window_process: { equals: 'PowerToys' }
+        window_class: { regex: 'HwndWrapper\[PowerToys\.PowerAccent.*?\]' }
+      - window_process: { equals: 'PowerToys' }
+        window_title: { regex: '.*? - Peek' }
+      - window_process: { equals: 'Lively' }
+        window_class: { regex: 'HwndWrapper' }
+      - window_process: { equals: 'EXCEL' }
+        window_class: { not_regex: 'XLMAIN' }
+      - window_process: { equals: 'WINWORD' }
+        window_class: { not_regex: 'OpusApp' }
+      - window_process: { equals: 'POWERPNT' }
+        window_class: { not_regex: 'PPTFrameClass' }
+
+binding_modes:
+  # When enabled, the focused window can be resized via arrow keys or HJKL.
+  - name: 'resize'
+    keybindings:
+      - commands: ['resize --width -2%']
+        bindings: ['h', 'left']
+      - commands: ['resize --width +2%']
+        bindings: ['l', 'right']
+      - commands: ['resize --height +2%']
+        bindings: ['k', 'up']
+      - commands: ['resize --height -2%']
+        bindings: ['j', 'down']
+      # Press enter/escape to return to default keybindings.
+      - commands: ['wm-disable-binding-mode --name resize']
+        bindings: ['escape', 'enter']
+
+keybindings:
+  # Right Alt is the dedicated WM modifier. The ralt+ctrl aliases support
+  # the installed US-International layout, which reports Right Alt as AltGr.
+
+  # Focus a window with either HJKL or the original arrow-key aliases.
+  - commands: ['focus --direction left']
+    bindings: ['ralt+h', 'ralt+left', 'ralt+ctrl+h', 'ralt+ctrl+left']
+  - commands: ['focus --direction down']
+    bindings: ['ralt+j', 'ralt+down', 'ralt+ctrl+j', 'ralt+ctrl+down']
+  - commands: ['focus --direction up']
+    bindings: ['ralt+k', 'ralt+up', 'ralt+ctrl+k', 'ralt+ctrl+up']
+  - commands: ['focus --direction right']
+    bindings: ['ralt+l', 'ralt+right', 'ralt+ctrl+l', 'ralt+ctrl+right']
+
+  # Move the focused window.
+  - commands: ['move --direction left']
+    bindings: ['ralt+shift+h', 'ralt+shift+left', 'ralt+ctrl+shift+h', 'ralt+ctrl+shift+left']
+  - commands: ['move --direction down']
+    bindings: ['ralt+shift+j', 'ralt+shift+down', 'ralt+ctrl+shift+j', 'ralt+ctrl+shift+down']
+  - commands: ['move --direction up']
+    bindings: ['ralt+shift+k', 'ralt+shift+up', 'ralt+ctrl+shift+k', 'ralt+ctrl+shift+up']
+  - commands: ['move --direction right']
+    bindings: ['ralt+shift+l', 'ralt+shift+right', 'ralt+ctrl+shift+l', 'ralt+ctrl+shift+right']
+
+  # Resize via the temporary HJKL/arrow binding mode defined above.
+  - commands: ['wm-enable-binding-mode --name resize']
+    bindings: ['ralt+r', 'ralt+ctrl+r']
+
+  # Temporarily pause all GlazeWM management and bindings.
+  - commands: ['wm-toggle-pause']
+    bindings: ['ralt+shift+p', 'ralt+ctrl+shift+p']
+
+  # Window state and layout controls.
+  - commands: ['toggle-tiling-direction']
+    bindings: ['ralt+v', 'ralt+ctrl+v']
+  - commands: ['wm-cycle-focus']
+    bindings: ['ralt+space', 'ralt+ctrl+space']
+  - commands: ['toggle-floating --centered']
+    bindings: ['ralt+shift+space', 'ralt+ctrl+shift+space']
+  - commands: ['toggle-tiling']
+    bindings: ['ralt+t', 'ralt+ctrl+t']
+  - commands: ['toggle-fullscreen']
+    bindings: ['ralt+f', 'ralt+ctrl+f']
+  - commands: ['toggle-minimized']
+    bindings: ['ralt+m', 'ralt+ctrl+m']
+
+  # Window manager lifecycle controls.
+  - commands: ['close']
+    bindings: ['ralt+shift+q', 'ralt+ctrl+shift+q']
+  - commands: ['wm-exit']
+    bindings: ['ralt+shift+e', 'ralt+ctrl+shift+e']
+  - commands: ['wm-reload-config']
+    bindings: ['ralt+shift+r', 'ralt+ctrl+shift+r']
+  - commands: ['wm-redraw']
+    bindings: ['ralt+shift+w', 'ralt+ctrl+shift+w']
+
+  # Launch a terminal.
+  - commands: ['shell-exec wt']
+    bindings: ['ralt+enter', 'ralt+ctrl+enter']
+
+  # Workspace navigation.
+  - commands: ['focus --prev-active-workspace']
+    bindings: ['ralt+page_up', 'ralt+ctrl+page_up']
+  - commands: ['focus --next-active-workspace']
+    bindings: ['ralt+page_down', 'ralt+ctrl+page_down']
+  - commands: ['focus --recent-workspace']
+    bindings: ['ralt+tab', 'ralt+ctrl+tab']
+
+  # Focus a numbered workspace.
+  - commands: ['focus --workspace 1']
+    bindings: ['ralt+1', 'ralt+ctrl+1']
+  - commands: ['focus --workspace 2']
+    bindings: ['ralt+2', 'ralt+ctrl+2']
+  - commands: ['focus --workspace 3']
+    bindings: ['ralt+3', 'ralt+ctrl+3']
+  - commands: ['focus --workspace 4']
+    bindings: ['ralt+4', 'ralt+ctrl+4']
+  - commands: ['focus --workspace 5']
+    bindings: ['ralt+5', 'ralt+ctrl+5']
+  - commands: ['focus --workspace 6']
+    bindings: ['ralt+6', 'ralt+ctrl+6']
+  - commands: ['focus --workspace 7']
+    bindings: ['ralt+7', 'ralt+ctrl+7']
+  - commands: ['focus --workspace 8']
+    bindings: ['ralt+8', 'ralt+ctrl+8']
+  - commands: ['focus --workspace 9']
+    bindings: ['ralt+9', 'ralt+ctrl+9']
+
+  # Move the entire current workspace to another monitor. Letter bindings
+  # avoid colliding with the original Shift+Arrow window-move shortcuts.
+  - commands: ['move-workspace --direction left']
+    bindings: ['ralt+shift+a', 'ralt+ctrl+shift+a']
+  - commands: ['move-workspace --direction right']
+    bindings: ['ralt+shift+f', 'ralt+ctrl+shift+f']
+  - commands: ['move-workspace --direction up']
+    bindings: ['ralt+shift+d', 'ralt+ctrl+shift+d']
+  - commands: ['move-workspace --direction down']
+    bindings: ['ralt+shift+s', 'ralt+ctrl+shift+s']
+
+  # Send a window to a numbered workspace without following it.
+  - commands: ['move --workspace 1']
+    bindings: ['ralt+shift+1', 'ralt+ctrl+shift+1']
+  - commands: ['move --workspace 2']
+    bindings: ['ralt+shift+2', 'ralt+ctrl+shift+2']
+  - commands: ['move --workspace 3']
+    bindings: ['ralt+shift+3', 'ralt+ctrl+shift+3']
+  - commands: ['move --workspace 4']
+    bindings: ['ralt+shift+4', 'ralt+ctrl+shift+4']
+  - commands: ['move --workspace 5']
+    bindings: ['ralt+shift+5', 'ralt+ctrl+shift+5']
+  - commands: ['move --workspace 6']
+    bindings: ['ralt+shift+6', 'ralt+ctrl+shift+6']
+  - commands: ['move --workspace 7']
+    bindings: ['ralt+shift+7', 'ralt+ctrl+shift+7']
+  - commands: ['move --workspace 8']
+    bindings: ['ralt+shift+8', 'ralt+ctrl+shift+8']
+  - commands: ['move --workspace 9']
+    bindings: ['ralt+shift+9', 'ralt+ctrl+shift+9']
